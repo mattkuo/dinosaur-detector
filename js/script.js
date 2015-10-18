@@ -9,9 +9,16 @@ $(document).ready(function() {
   var score;
   var addedPlayer;
 
-  var objects = ["iphone", "apple", "happiness", "pop can", "bottle"];
+  var objects = ["iphone", "happiness", "pop can", "bottle"];
 
   var $playerTable = $('#players-table tbody');
+
+  var clarifai = new Clarifai(
+    {
+      'clientId': ***REMOVED***,
+      'clientSecret': ***REMOVED***
+    }
+  );
 
   // ref.authAnonymously(function(error, authData) {
   ref.authWithOAuthPopup('twitter', function(error, authData) {
@@ -24,6 +31,14 @@ $(document).ready(function() {
   });
 
   function init() {
+    Webcam.set({
+			width: 320,
+			height: 240,
+			dest_width: 640,
+			dest_height: 480,
+			image_format: 'jpeg',
+			jpeg_quality: 90
+		});
     Webcam.attach('#my-camera');
 
     gamestate.on('value', function(snapshot) {
@@ -96,44 +111,37 @@ $(document).ready(function() {
   }
 
   function takeSnapshot() {
-    // Webcam.snap(function(dataUri) {
-    //     var hash = CryptoJS.SHA256(Math.random() + CryptoJS.SHA256(dataUri));
-    //     var f = new Firebase(firebaseRef + 'pano/' + hash + '/filePayload');
-    //     f.set(dataUri, function(isError) {
-    //       if (isError === undefined) return;
-    //       console.log('success');
-    //       window.location.hash = hash;
-    //       $('#my-result').append('<img src="'+dataUri+'"/>');
-    //     });
-    // } );
     Webcam.snap(function(dataUri) {
-      var rawImage = encodeURIComponent(dataUri.replace(/^data\:image\/\w+\;base64\,/, ''));
-      $.ajax({
-          type: 'POST',
-          url: 'https://api.clarifai.com/v1/tag/',
-          dataType: 'json',
-          headers: {
-            'Authorization': 'Bearer GVUFXq6NSHxWhxdnIKy7ss0YB2o4Rk'
-          },
-          data: 'encoded_data=' + rawImage
-        })
-        .done(function(data) {
-          console.log(data.results[0].result.tag.classes);
-          var arrayLength = data.results[0].result.tag.classes.length;
-          for (var i = 0; i < arrayLength; i++) {
-            if (data.results[0].result.tag.classes[i] == objects[state % objects.length]) {
-              gamestate.set(state + 1);
-              score++;
-              addedPlayer.update({
-                uid: uid,
-                username: twitter.username,
-                score: score
-              });
-              return;
-            }
-          }
+      var rawImage = dataUri.replace(/^data\:image\/\w+\;base64\,/, '');
 
-        });
+      $.ajax({
+        url: 'https://api.imgur.com/3/image',
+        type: 'POST',
+        headers: {
+          Authorization: 'Client-ID ***REMOVED***',
+          Accept: 'application/json'
+        },
+        data: {
+          image: rawImage,
+          type: 'base64'
+        }
+      }).done(sendToClarify);
+    });
+  }
+
+  function sendToClarify(imgurData) {
+    clarifai.predict(imgurData.data.link, objects[state % objects.length], function(prediction) {
+      // clarifai.positive(imgurData.data.link, objects[state % objects.length]);
+      // clarifai.train(objects[state % objects.length]);
+      console.log(prediction);
+      if (prediction.score * 100 < 60) return;
+      gamestate.set(state + 1);
+      score++;
+      addedPlayer.update({
+        uid: uid,
+        username: twitter.username,
+        score: score
+      });
     });
   }
 });
