@@ -5,7 +5,7 @@ $(document).ready(function() {
   var htmlForPath = {};
   var twitter, uid;
 
-  var $playerTable = $('#players-table');
+  var $playerTable = $('#players-table tbody');
 
   // ref.authAnonymously(function(error, authData) {
   ref.authWithOAuthPopup('twitter', function(error, authData) {
