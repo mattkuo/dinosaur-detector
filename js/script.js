@@ -19,7 +19,26 @@ $(document).ready(function() {
     Webcam.attach( '#my-camera' );
     console.log(twitter);
     console.log(uid);
-    players.push({uid: uid, twitter: twitter.username });
+    players.push({uid: uid, twitter: twitter.user });
+
+    connectedRef.on("value", function(isOnline) {
+   if (isOnline.val()) {
+     // If we lose our internet connection, we want ourselves removed from the list.
+     players.onDisconnect().remove();
+
+     // Set our initial online status.
+   }
+   else {
+
+     // We need to catch anytime we are marked as offline and then set the correct status. We
+     // could be marked as offline 1 on page load or 2 when we lose our internet connection
+     // temporarily.
+     players.remove();  
+    }
+ });
+
+
+
     addPlayers();
     $('.snapshot').click(takeSnapshot);
   }
