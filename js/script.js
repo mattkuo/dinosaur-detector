@@ -22,22 +22,8 @@ $(document).ready(function() {
     console.log(twitter);
     console.log(uid);
 
-    players.push({uid: uid, username: twitter.username, score: 0 });
-
-    players.on("value", function(isOnline) {
-      if (isOnline.val()) {
-       // If we lose our internet connection, we want ourselves removed from the list.
-       players.onDisconnect().remove();
-
-       // Set our initial online status.
-      } else {
-        // We need to catch anytime we are marked as offline and then set the correct status. We
-        // could be marked as offline 1 on page load or 2 when we lose our internet connection
-        // temporarily.
-        players.remove();
-      }
-    });
-
+    var addedPlayer = players.push({uid: uid, username: twitter.username, score: 0 });
+    addedPlayer.onDisconnect().remove();
     addPlayerListeners();
 
     $('.snapshot').click(takeSnapshot);
