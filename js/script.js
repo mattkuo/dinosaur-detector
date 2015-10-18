@@ -2,6 +2,7 @@ $(document).ready(function() {
   var firebaseRef = 'https://safe-dinosaur.firebaseio.com/';
   var players = new Firebase(firebaseRef + '/playerboard');
   var ref = new Firebase(firebaseRef);
+  var htmlForPath = {};
   var twitter, uid;
 
   var $playerTable = $('#players-table');
@@ -32,25 +33,42 @@ $(document).ready(function() {
   // Attach listeners to players
   function addPlayerListeners() {
     players.orderByChild('score');
-    players.on('child_added', function(snapshot) {
+    players.on('child_added', function(snapshot, prevSnapshot) {
       var data = snapshot.val();
       console.log(data);
-      addPlayerToDom(data.username, data.score);
+      addPlayerToDom(snapshot.key(), prevSnapshot, data.username, data.score);
     });
-    players.on('child_removed', function(snapshot) {
+    players.on('child_removed', function(snapshot, prevSnapshot) {
+      var data = snapshot.val();
       console.log(snapshot);
+      removePlayerFromDom(snapshot.key(), prevSnapshot);
     });
 
   }
 
   // Add player to DOM
-  function addPlayerToDom(name, score) {
+  function addPlayerToDom(key, prevSnapshot, name, score) {
     var newPlayerRow = $('<tr/>');
     var nameTd = $('<td/>').append($('<em/>').text(name));
     var scoreTd = $('<td/>').text(score);
     newPlayerRow.append(nameTd);
     newPlayerRow.append(scoreTd);
     $playerTable.append(newPlayerRow);
+
+    htmlForPath[key] = newPlayerRow;
+
+    if (prevSnapshot === null) {
+      $playerTable.append(newPlayerRow);
+    } else {
+      var lowerRow = htmlForPath[prevSnapshot];
+      lowerRow.before(newPlayerRow);
+    }
+  }
+
+  function removePlayerFromDom(key, prevSnapshot) {
+    var removedScoreRow = htmlForPath[key];
+    removedScoreRow.remove();
+    delete htmlForPath[key];
   }
 
   function takeSnapshot() {
