@@ -1,9 +1,19 @@
 header {
   margin-top: 50px;
+  text-align: center;
 }
 
 #my-camera {
   margin: 30px 0;
-  width: 100%;
+  width: 100% !important;
   height: 250px;
+}
+
+.snapshot {
+  display: block;
+  margin: 0 auto;
+}
+
+#players-table {
+  margin: 0 auto;
 }
