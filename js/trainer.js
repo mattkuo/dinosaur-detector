@@ -45,6 +45,20 @@ function test() {
   clarifai.positive('https://mediabakery.files.wordpress.com/2013/12/mediabakery_mnt0004698.jpg', 'bottle');
 
   clarifai.train('bottle');
+
+  clarifai.positive('http://mywisemom.com/wp-content/uploads/2013/09/Apple-Hand1.jpg ', 'apple');
+  clarifai.positive('https://c1.staticflickr.com/5/4127/4972887015_4794339a46_b.jpg', 'apple');
+  clarifai.positive('https://c1.staticflickr.com/3/2884/10743700406_d7c1ac8d81_b.jpg', 'apple');
+  clarifai.positive('http://res.freestockphotos.biz/pictures/9/9554-a-hand-holding-a-bitten-green-apple-pv.jpg', 'apple');
+  clarifai.positive('https://itchylittleworld.files.wordpress.com/2012/08/img_3590.jpg', 'apple');
+
+  clarifai.negative('http://hwalls.com/upload/grushi_wallpaper1329.jpg', 'apple');
+  clarifai.negative('http://weknowyourdreams.com/image.php?pic=/images/banana/banana-06.jpg', 'apple');
+  clarifai.negative('http://pad1.whstatic.com/images/thumb/6/6d/Make-Orange-Juice-Step-1-Version-2.jpg/670px-Make-Orange-Juice-Step-1-Version-2.jpg', 'apple');
+  clarifai.negative('https://upload.wikimedia.org/wikipedia/commons/2/29/PerfectStrawberry.jpg', 'apple');
+
+  clarifai.train('apple');
+
 }
 
 function pred() {
