@@ -27,10 +27,11 @@ $(document).ready(function() {
     gamestate.on('value', function(snapshot) {
       if (!snapshot.val()) {
         gamestate.set(0);
-
+        state = 0;
+      }else{
+        state = snapshot.val();
       }
-
-      $('#target-object').text("Go find a " + objects[snapshot.val()]);
+      $('#target-object').text("Go find a " + objects[snapshot.val()%objects.length]);
 
     });
 
@@ -102,10 +103,12 @@ $(document).ready(function() {
         data: 'encoded_data=' + rawImage
       })
       .done(function(data) {
-        console.log(data.results[0].result.tag.classes);
-
+          console.log(data.results[0].result.tag.classes);
+          var arrayLength = data.results[0].result.tag.classes.length
         for (var i = 0; i < arrayLength; i++) {
-            //Do something
+            if(data.results[0].result.tag.classes[i] == objects[state%objects.length] ){
+                gamestate.set(state+1);
+            }
         }
 
       });
