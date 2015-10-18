@@ -2,6 +2,7 @@ $(document).ready(function() {
   var firebaseRef = 'https://safe-dinosaur.firebaseio.com/';
   var players = new Firebase(firebaseRef + '/playerboard');
   var ref = new Firebase(firebaseRef);
+  var gamestate = new Firebase(firebaseRef + '/gamestate');
   var htmlForPath = {};
   var twitter, uid;
 
@@ -20,8 +21,12 @@ $(document).ready(function() {
 
   function init() {
     Webcam.attach( '#my-camera' );
-    console.log(twitter);
-    console.log(uid);
+
+    gamestate.once('value', function(snapshot) {
+      if (!snapshot.val()) {
+        gamestate.set(1);
+      }
+    });
 
     var addedPlayer = players.push({uid: uid, username: twitter.username, score: 0 });
     addedPlayer.onDisconnect().remove();
