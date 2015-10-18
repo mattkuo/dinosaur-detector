@@ -19,15 +19,22 @@ $(document).ready(function() {
     Webcam.attach( '#my-camera' );
     console.log(twitter);
     console.log(uid);
+
     players.push({uid: uid, twitter: twitter.username });
-    addPlayers();
+    addPlayerListeners();
+
     $('.snapshot').click(takeSnapshot);
   }
 
-  function addPlayers() {
-    players.orderByChild('score').on('child_added', function(snapshot) {
+  function addPlayerListeners() {
+    players.orderByChild('score');
+    players.on('child_added', function(snapshot) {
       console.log(snapshot);
     });
+    players.on('child_removed', function(snapshot) {
+      console.log(snapshot);
+    });
+
   }
 
   function takeSnapshot() {
