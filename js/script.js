@@ -19,6 +19,7 @@ $(document).ready(function() {
     Webcam.attach( '#my-camera' );
     console.log(twitter);
     console.log(uid);
+    players.push({uid: uid, twitter: twitter.username });
     addPlayers();
     $('.snapshot').click(takeSnapshot);
   }
