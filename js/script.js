@@ -19,6 +19,7 @@ $(document).ready(function() {
     Webcam.attach( '#my-camera' );
     console.log(twitter);
     console.log(uid);
+<<<<<<< HEAD
     players.push({uid: uid, twitter: twitter.user });
 
     connectedRef.on("value", function(isOnline) {
@@ -33,20 +34,29 @@ $(document).ready(function() {
      // We need to catch anytime we are marked as offline and then set the correct status. We
      // could be marked as offline 1 on page load or 2 when we lose our internet connection
      // temporarily.
-     players.remove();  
+     players.remove();
     }
  });
 
 
 
     addPlayers();
+
+    players.push({uid: uid, twitter: twitter.username });
+    addPlayerListeners();
+
     $('.snapshot').click(takeSnapshot);
   }
 
-  function addPlayers() {
-    players.orderByChild('score').on('child_added', function(snapshot) {
+  function addPlayerListeners() {
+    players.orderByChild('score');
+    players.on('child_added', function(snapshot) {
       console.log(snapshot);
     });
+    players.on('child_removed', function(snapshot) {
+      console.log(snapshot);
+    });
+
   }
 
   function takeSnapshot() {
