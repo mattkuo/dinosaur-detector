@@ -5,6 +5,7 @@ $(document).ready(function() {
   var gamestate = new Firebase(firebaseRef + '/gamestate');
   var htmlForPath = {};
   var twitter, uid;
+  var state;
 
   var objects = ["apple", "bottle", "banana", "hand", "shoe"];
 
@@ -23,10 +24,13 @@ $(document).ready(function() {
   function init() {
     Webcam.attach( '#my-camera' );
 
-    gamestate.once('value', function(snapshot) {
+    gamestate.on('value', function(snapshot) {
       if (!snapshot.val()) {
-        gamestate.set(1);
-
+        gamestate.set(0);
+        state = 0;
+      }
+      else {
+        state = snapshot.val();
       }
     });
 
@@ -99,6 +103,11 @@ $(document).ready(function() {
       })
       .done(function(data) {
         console.log(data.results[0].result.tag.classes);
+
+        for (var i = 0; i < arrayLength; i++) {
+            //Do something
+        }
+
       });
     });
   }
