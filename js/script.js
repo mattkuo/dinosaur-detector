@@ -7,7 +7,7 @@ $(document).ready(function() {
   var twitter, uid;
   var state;
   var score;
-  var addedPlayer
+  var addedPlayer;
 
   var objects = ["men", "men", "men", "men", "men"];
 
@@ -24,20 +24,24 @@ $(document).ready(function() {
   });
 
   function init() {
-    Webcam.attach( '#my-camera' );
+    Webcam.attach('#my-camera');
 
     gamestate.on('value', function(snapshot) {
       if (!snapshot.val()) {
         gamestate.set(0);
         state = 0;
-      }else{
+      } else {
         state = snapshot.val();
       }
-      $('#target-object').text("Go find a " + objects[snapshot.val()%objects.length]);
+      $('#target-object').text("Go find a " + objects[snapshot.val() % objects.length]);
 
     });
-    score =0;
-     addedPlayer = players.push({uid: uid, username: twitter.username, score: 0 });
+    score = 0;
+    addedPlayer = players.push({
+      uid: uid,
+      username: twitter.username,
+      score: 0
+    });
     addedPlayer.onDisconnect().remove();
     addPlayerListeners();
 
@@ -55,6 +59,15 @@ $(document).ready(function() {
       removePlayerFromDom(snapshot.key(), prevSnapshot);
     });
 
+    players.on('child_moved', changedCallback);
+    players.on('child_changed', changedCallback);
+
+  }
+
+  function changedCallback(scoreSnapshot, prevSnapshot) {
+    var data = scoreSnapshot.val();
+    removePlayerFromDom(scoreSnapshot.key());
+    addPlayerToDom(scoreSnapshot.key(), prevSnapshot, data.username, data.score);
   }
 
   // Add player to DOM
@@ -96,29 +109,31 @@ $(document).ready(function() {
     Webcam.snap(function(dataUri) {
       var rawImage = encodeURIComponent(dataUri.replace(/^data\:image\/\w+\;base64\,/, ''));
       $.ajax({
-        type: 'POST',
-        url: 'https://api.clarifai.com/v1/tag/',
-        dataType: 'json',
-        headers: {
-          'Authorization': 'Bearer GVUFXq6NSHxWhxdnIKy7ss0YB2o4Rk'
-        },
-        data: 'encoded_data=' + rawImage
-      })
-      .done(function(data) {
+          type: 'POST',
+          url: 'https://api.clarifai.com/v1/tag/',
+          dataType: 'json',
+          headers: {
+            'Authorization': 'Bearer GVUFXq6NSHxWhxdnIKy7ss0YB2o4Rk'
+          },
+          data: 'encoded_data=' + rawImage
+        })
+        .done(function(data) {
           console.log(data.results[0].result.tag.classes);
-          var arrayLength = data.results[0].result.tag.classes.length
-        for (var i = 0; i < arrayLength; i++) {
-            if(data.results[0].result.tag.classes[i] == objects[state%objects.length] ){
-                gamestate.set(state+1);
-                score++;
-                addedPlayer.update({uid: uid, username: twitter.username, score: score });
-
+          var arrayLength = data.results[0].result.tag.classes.length;
+          for (var i = 0; i < arrayLength; i++) {
+            if (data.results[0].result.tag.classes[i] == objects[state % objects.length]) {
+              gamestate.set(state + 1);
+              score++;
+              addedPlayer.update({
+                uid: uid,
+                username: twitter.username,
+                score: score
+              });
+              return;
             }
-        }
+          }
 
-      });
+        });
     });
   }
-
-
 });
