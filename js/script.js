@@ -6,6 +6,8 @@ $(document).ready(function() {
   var htmlForPath = {};
   var twitter, uid;
 
+  var objects = ["apple", "bottle", "banana", "hand", "shoe"];
+
   var $playerTable = $('#players-table tbody');
 
   // ref.authAnonymously(function(error, authData) {
@@ -25,6 +27,7 @@ $(document).ready(function() {
     gamestate.once('value', function(snapshot) {
       if (!snapshot.val()) {
         gamestate.set(1);
+
       }
     });
 
