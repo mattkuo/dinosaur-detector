@@ -6,8 +6,10 @@ $(document).ready(function() {
   var htmlForPath = {};
   var twitter, uid;
   var state;
+  var score;
+  var addedPlayer
 
-  var objects = ["apple", "bottle", "banana", "hand", "shoe"];
+  var objects = ["men", "men", "men", "men", "men"];
 
   var $playerTable = $('#players-table tbody');
 
@@ -34,8 +36,8 @@ $(document).ready(function() {
       $('#target-object').text("Go find a " + objects[snapshot.val()%objects.length]);
 
     });
-
-    var addedPlayer = players.push({uid: uid, username: twitter.username, score: 0 });
+    score =0;
+     addedPlayer = players.push({uid: uid, username: twitter.username, score: 0 });
     addedPlayer.onDisconnect().remove();
     addPlayerListeners();
 
@@ -108,6 +110,9 @@ $(document).ready(function() {
         for (var i = 0; i < arrayLength; i++) {
             if(data.results[0].result.tag.classes[i] == objects[state%objects.length] ){
                 gamestate.set(state+1);
+                score++;
+                addedPlayer.update({uid: uid, username: twitter.username, score: score });
+
             }
         }
 
