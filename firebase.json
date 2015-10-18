@@ -1,0 +1,9 @@
+{
+  "firebase": "safe-dinosaur",
+  "public": ".",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}
