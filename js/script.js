@@ -23,11 +23,13 @@ $(document).ready(function() {
   function init() {
     Webcam.attach( '#my-camera' );
 
-    gamestate.once('value', function(snapshot) {
+    gamestate.on('value', function(snapshot) {
       if (!snapshot.val()) {
-        gamestate.set(1);
-
+        gamestate.set(0);
       }
+
+      $('#target-object').text("Go find a " + objects[snapshot.val()]);
+
     });
 
     var addedPlayer = players.push({uid: uid, username: twitter.username, score: 0 });

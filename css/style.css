@@ -17,3 +17,7 @@ header {
 #players-table {
   margin: 0 auto;
 }
+
+.target-object {
+  text-align: center;
+}
