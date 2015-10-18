@@ -13,7 +13,6 @@ $(document).ready(function() {
   // ref.authAnonymously(function(error, authData) {
   ref.authWithOAuthPopup('twitter', function(error, authData) {
     if (error) return console.log('Login Failed: ', error);
-    console.log(authData);
     twitter = authData.twitter;
     uid = authData.uid;
     init();
@@ -43,12 +42,9 @@ $(document).ready(function() {
     players.orderByChild('score');
     players.on('child_added', function(snapshot, prevSnapshot) {
       var data = snapshot.val();
-      console.log(data);
       addPlayerToDom(snapshot.key(), prevSnapshot, data.username, data.score);
     });
     players.on('child_removed', function(snapshot, prevSnapshot) {
-      var data = snapshot.val();
-      console.log(snapshot);
       removePlayerFromDom(snapshot.key(), prevSnapshot);
     });
 
@@ -97,7 +93,7 @@ $(document).ready(function() {
         url: 'https://api.clarifai.com/v1/tag/',
         dataType: 'json',
         headers: {
-          'Authorization': 'Bearer T01MKAlG9DySvJGuNw33jscBeOqQzC'
+          'Authorization': 'Bearer GVUFXq6NSHxWhxdnIKy7ss0YB2o4Rk'
         },
         data: 'encoded_data=' + rawImage
       })
