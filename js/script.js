@@ -4,6 +4,8 @@ $(document).ready(function() {
   var ref = new Firebase(firebaseRef);
   var twitter, uid;
 
+  var $playerTable = $('#players-table');
+
   // ref.authAnonymously(function(error, authData) {
   ref.authWithOAuthPopup('twitter', function(error, authData) {
     if (error) return console.log('Login Failed: ', error);
@@ -19,44 +21,50 @@ $(document).ready(function() {
     Webcam.attach( '#my-camera' );
     console.log(twitter);
     console.log(uid);
-<<<<<<< HEAD
-    players.push({uid: uid, twitter: twitter.user });
 
-    connectedRef.on("value", function(isOnline) {
-   if (isOnline.val()) {
-     // If we lose our internet connection, we want ourselves removed from the list.
-     players.onDisconnect().remove();
+    players.push({uid: uid, username: twitter.username, score: 0 });
 
-     // Set our initial online status.
-   }
-   else {
+    players.on("value", function(isOnline) {
+      if (isOnline.val()) {
+       // If we lose our internet connection, we want ourselves removed from the list.
+       players.onDisconnect().remove();
 
-     // We need to catch anytime we are marked as offline and then set the correct status. We
-     // could be marked as offline 1 on page load or 2 when we lose our internet connection
-     // temporarily.
-     players.remove();
-    }
- });
+       // Set our initial online status.
+      } else {
+        // We need to catch anytime we are marked as offline and then set the correct status. We
+        // could be marked as offline 1 on page load or 2 when we lose our internet connection
+        // temporarily.
+        players.remove();
+      }
+    });
 
-
-
-    addPlayers();
-
-    players.push({uid: uid, twitter: twitter.username });
     addPlayerListeners();
 
     $('.snapshot').click(takeSnapshot);
   }
 
+  // Attach listeners to players
   function addPlayerListeners() {
     players.orderByChild('score');
     players.on('child_added', function(snapshot) {
-      console.log(snapshot);
+      var data = snapshot.val();
+      console.log(data);
+      addPlayerToDom(data.username, data.score);
     });
     players.on('child_removed', function(snapshot) {
       console.log(snapshot);
     });
 
+  }
+
+  // Add player to DOM
+  function addPlayerToDom(name, score) {
+    var newPlayerRow = $('<tr/>');
+    var nameTd = $('<td/>').append($('<em/>').text(name));
+    var scoreTd = $('<td/>').text(score);
+    newPlayerRow.append(nameTd);
+    newPlayerRow.append(scoreTd);
+    $playerTable.append(newPlayerRow);
   }
 
   function takeSnapshot() {
