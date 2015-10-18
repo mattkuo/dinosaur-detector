@@ -9,7 +9,7 @@ $(document).ready(function() {
   var score;
   var addedPlayer;
 
-  var objects = ["men", "men", "men", "men", "men"];
+  var objects = ["shoe", "food", "water", "happiness", "coffee"];
 
   var $playerTable = $('#players-table tbody');
 
