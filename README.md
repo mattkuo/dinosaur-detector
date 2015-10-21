@@ -1,33 +1,26 @@
-Who: 
+# Dinosaur Detector #
+This web app was developed by three UBC students Matthew, Denis and Patience
+during the fall session of [Dubhacks 2015](http://15f.dubhacks.co). It was
+nominated one of the top 5 hacks overall! You can read more about the project
+[here](http://devpost.com/software/dinosaur-detector).
 
-Matthew, Denis and Patience. Three computer science students and aspiring developers from Vancouver, BC.
+This is our keeping-up-with-the-times take on the traditional scavenger hunt.
+The objective is to find the objects suggested by the game, before your
+competitors beat you to it! Your score will be updated in real time on the
+board.
 
-What: 
+## Tech ##
+We built this app with [Firebase](https://www.firebase.com/) to power our
+backend and do a live update of the players' scores. For object detection we
+used [Clarifai's](http://www.clarifai.com) image recognition/machine learning
+API. The imgur API is used to upload images and send them to Clarifai.
+[Webcam.js](https://github.com/jhuckaby/webcamjs) was used to control a player's
+camera.
 
-This is our keeping-up-with-the-times take on the traditional scavenger hunt. The objective is to find the objects suggested by the game, before your competitors beat you to it! Your score will be updated in real time on the board.
-
-How: 
-
-We built this app with Firebase to power our user interaction and Javascript for our frontend. For image recognition we used Clarifai's learning technology. We also used imgur to send images to Clarifai.
-
-Challenges we ran into:
-
-We ran into issues when using when sending images to Clarifai since the learning function didn't allow us to directly send the image data. We were able to jump over this hurdle by uploading files to imgur and then sending them to Clarifai. Another issue we ran into was building multi-user apps in Firebase which meant we needed to ensure that data was being displayed consistently across users.
-
-We're PROUD of:
-
-- For two of our members, successfully hacking our first web app
-- We completed something cool and usable using hot new technologies
-- Our unwavering team spirit and perseverance through challenges
-
-What we learned:
-
-On the technical side of things, we honed our Javascript and web development skills. Additionally, we learned how to take our apps to the next level with the Firebase platform and the Clarifai API. We also learned how to work on a team of varying skill levels.
-
-What's next for Dinosaur Detector:
-
-
-The ultimate scavenger hunt challenge: find a dinosaur!
-
-
-
+## Getting Started ##
+* Acquire API keys for Clarifai and Imgur. Create a Firebase account.
+* Install firebase-tools: ```npm install -g firebase-tools```
+* Duplicate ```configuration-template.js``` in ```/js``` and rename it
+ ```configuration.js```. Fill in the API keys and base URL for your firebase
+ repo as necessary.
+* In the terminal, run ```firebase deploy``` to deploy the app to Firebase
