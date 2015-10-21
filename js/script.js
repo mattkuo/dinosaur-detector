@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  var firebaseRef = 'https://safe-dinosaur.firebaseio.com/';
+  var firebaseRef = CONFIG.BASE_URL;
   var players = new Firebase(firebaseRef + '/playerboard');
   var ref = new Firebase(firebaseRef);
   var gamestate = new Firebase(firebaseRef + '/gamestate');
@@ -15,8 +15,8 @@ $(document).ready(function() {
 
   var clarifai = new Clarifai(
     {
-      'clientId': ***REMOVED***,
-      'clientSecret': ***REMOVED***
+      'clientId': CONFIG.API_KEYS.clarifai.clientId,
+      'clientSecret': CONFIG.API_KEYS.clarifai.clientSecret
     }
   );
 
@@ -118,7 +118,7 @@ $(document).ready(function() {
         url: 'https://api.imgur.com/3/image',
         type: 'POST',
         headers: {
-          Authorization: 'Client-ID ***REMOVED***',
+          Authorization: 'Client-ID ' + CONFIG.API_KEYS.imgur.clientId,
           Accept: 'application/json'
         },
         data: {

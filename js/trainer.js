@@ -70,8 +70,8 @@ function pred() {
 $(document).ready(function(){
   clarifai = new Clarifai(
     {
-      'clientId': ***REMOVED***,
-      'clientSecret': ***REMOVED***
+      'clientId': CONFIG.API_KEYS.clarifai.clientId,
+      'clientSecret': CONFIG.API_KEYS.clarifai.clientSecret
     }
   );
 
