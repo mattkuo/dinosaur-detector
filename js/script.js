@@ -9,7 +9,7 @@ $(document).ready(function() {
   var score;
   var addedPlayer;
 
-  var objects = ["iphone", "happiness", "pop can", "bottle", "apple"];
+  var objects = ["iphone", "happiness", "bottle", "apple"];
 
   var $playerTable = $('#players-table tbody');
 
@@ -20,7 +20,6 @@ $(document).ready(function() {
     }
   );
 
-  // ref.authAnonymously(function(error, authData) {
   ref.authWithOAuthPopup('twitter', function(error, authData) {
     if (error) return console.log('Login Failed: ', error);
     twitter = authData.twitter;
@@ -34,8 +33,8 @@ $(document).ready(function() {
     Webcam.set({
 			width: 320,
 			height: 240,
-			dest_width: 640,
-			dest_height: 480,
+			// dest_width: 640,
+			// dest_height: 480,
 			image_format: 'jpeg',
 			jpeg_quality: 90
 		});
@@ -131,8 +130,6 @@ $(document).ready(function() {
 
   function sendToClarify(imgurData) {
     clarifai.predict(imgurData.data.link, objects[state % objects.length], function(prediction) {
-      // clarifai.positive(imgurData.data.link, objects[state % objects.length]);
-      // clarifai.train(objects[state % objects.length]);
       console.log(prediction);
       if (prediction.score * 100 < 60) return;
       gamestate.set(state + 1);

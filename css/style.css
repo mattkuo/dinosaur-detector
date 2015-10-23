@@ -5,8 +5,10 @@ header {
 
 #my-camera {
   margin: 30px 0;
-  width: 640px;
-  height: 320px;
+}
+
+#camera-container {
+  position: relative;
 }
 
 .snapshot {
